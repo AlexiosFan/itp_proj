@@ -116,4 +116,28 @@ Proof.
   auto. auto.
 Qed.
 
+Definition Transitive (f : Frame) := forall w v u: W, accessibility f w v /\ accessibility f v u -> accessibility f w u.
+
+Theorem Four: forall A : mformula,
+  fvalid_class Transitive (Imp (Box A) (Box (Box A)) ).
+Proof.
+  unfold fvalid_class.
+  unfold fvalid.
+  unfold Transitive.
+  unfold mvalid.
+  intros.
+  apply imp. apply H1. apply imply_to_or. intros.
+  apply box. apply H1. intros. 
+  apply box. apply H3. intros.
+    specialize (H w v v0).
+    rewrite H0 in H4. rewrite H0 in H6.
+    assert(H' := conj H4 H6).
+    specialize (H H').
+  rewrite box in H2.
+    specialize (H2 v0 H5).
+    rewrite H0 in H2.
+    specialize (H2 H).
+  auto. auto.
+Qed.
+ 
 
