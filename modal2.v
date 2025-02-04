@@ -3,6 +3,17 @@ Require Import Coq.Lists.List.
 Import ListNotations.
 
 
+(*
+Our project focues on the formalization of the modal logic with Kripke semantics.
+We follow the definition of Kripke semantics from the wikipedia page: https://en.wikipedia.org/wiki/Kripke_semantics
+
+Interestingly, this formalization approach does not involve the intepretation of modal operators with existential and universal quantifiers. 
+Instead, we chose only three logic operators: implication, false and necessity. 
+Based on these operators, we defined other logical operators such as negation, conjunction, disjunction and possibility.
+
+We also managed to prove all proposed axioms provided on the exercise sheet. 
+*)
+
 Parameter W: Type. (* set for worlds*)
 Parameter u: Type. (* type for individuals*)
 Definition o := W -> Prop. (* type of modal propositions *)
@@ -159,6 +170,11 @@ Qed.
 
 (* Serial *)
 Definition Serial (f : Frame) := forall w: W, exists v: W, accessibility f w v.
+
+(*
+  Note that there is no universal quantifier on w in exercise sheet. However, to guarantee w is well defined on accessibility of f, we need this premises.
+  This convention is followed upon all the axioms we prove in the following.
+*)
 
 Theorem D: forall A : mformula, 
     fvalid_class Serial (Imp (Box A) (Diamond A)).
