@@ -24,7 +24,7 @@ Definition Or (A B: mformula) := Not (And (Not A) (Not B)).
 Record Frame := {
   worlds : list W;                      
   accessibility : W -> W -> Prop; 
-  domain : forall u w : W, accessibility u w -> In u (worlds) /\ In w (worlds);
+  domain : forall u w : W, accessibility u w -> In u (worlds) /\ In w (worlds); (* the accessibility is define on elements of worlds *)
 }.
 
 Record Model := {
@@ -35,6 +35,8 @@ Record Model := {
   imp : forall w : W, forall A B : mformula, In w (worlds frame) -> (evaluation w (Imp A B)) <-> ((evaluation w A) -> (evaluation w B));
   box : forall w : W, forall A : mformula, In w (worlds frame) -> (evaluation w (Box A)) <-> (forall v : W, In v (worlds frame) -> frame.(accessibility) w v -> evaluation v A);
 }.
+
+(*For each element, we need to assume that they are contained in the worlds*)
 
 
 Definition mvalid (M: Model) (A: mformula) := forall w: W, In w (worlds (frame M)) -> M.(evaluation) w A.
